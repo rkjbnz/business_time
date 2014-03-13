@@ -2,6 +2,16 @@ require File.expand_path('../helper', __FILE__)
 
 describe "business hours" do
   describe "with a standard Time object" do
+
+    it "should add minutes part of hours count to business hours" do
+      BusinessTime::Config.beginning_of_workday = "8:30 am"
+      BusinessTime::Config.end_of_workday = "5:00 pm"
+      starttime = Time.parse("14 March 2014 9:00am")
+      endtime   = Time.parse("17 March 2014 9:00am")
+      expected = 8.5.business_hours.after(starttime)
+      assert_equal endtime, expected
+    end
+
     it "move to tomorrow if we add 8 business hours" do
       first = Time.parse("Aug 4 2010, 9:35 am")
       later = 8.business_hours.after(first)
